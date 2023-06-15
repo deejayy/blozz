@@ -1,0 +1,13 @@
+<div class="board-wrapper">
+  <div class="board" #board dropzone="move">
+    <div class="row" *ngFor="let row of board$ | async; let i = index">
+      <div
+        class="cell"
+        *ngFor="let piece of row; let j = index"
+        [attr.data-col]="j"
+        [attr.data-row]="i"
+        [ngClass]="[[i, j] | alternate, 'active' + piece]"
+      ></div>
+    </div>
+  </div>
+</div>

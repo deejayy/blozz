@@ -1,0 +1,52 @@
+@use 'sass:map';
+@import 'app-theme';
+@import '../../../../style/board.style';
+
+.board-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  user-select: none;
+  border: 1px solid map.get($board-dark, border-color);
+  border-collapse: collapse;
+
+  .row {
+    pointer-events: none;
+    height: $box-size;
+    display: flex;
+  }
+
+  .cell {
+    box-shadow: inset $bevel-size $bevel-size 5px 0 $bevel-top, inset calc(-1 * $bevel-size) calc(-1 * $bevel-size) 5px 0 $bevel-bottom;
+    pointer-events: none;
+    border: 1px solid map.get($board-dark, border-color);
+    width: $box-size;
+
+    &.alternate {
+      background-color: map.get($board-dark, alternate-color);
+
+      @media (prefers-color-scheme: light) {
+        background-color: map.get($board-light, alternate-color);
+      }
+    }
+
+    &.active1 {
+      background-color: map.get($board-dark, placed-color);
+
+      @media (prefers-color-scheme: light) {
+        background-color: map.get($board-light, placed-color);
+      }
+    }
+
+    &.active2 {
+      background-color: map.get($board-dark, border-color);
+
+      @media (prefers-color-scheme: light) {
+        background-color: map.get($board-light, border-color);
+      }
+    }
+  }
+}

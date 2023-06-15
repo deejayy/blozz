@@ -1,0 +1,48 @@
+@use 'sass:map';
+@import 'app-theme';
+@import '../../../../style/board.style';
+
+:host {
+  display: block;
+  flex-grow: 1;
+  position: absolute;
+  text-align: center;
+}
+
+.score-announce {
+  opacity: 0;
+  transition: all 1s;
+  font-size: 30px;
+  letter-spacing: 2px;
+  text-align: center;
+  pointer-events: none;
+
+  .point {
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    font-weight: bold;
+    text-shadow: 0 0 15px map.get($board-dark, place-hilight);
+  }
+
+  .combo {
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  &.animate {
+    animation: flash 750ms !important;
+  }
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    font-size: 50px;
+    letter-spacing: 10px;
+    opacity: 0;
+  }
+}

@@ -24,7 +24,7 @@ export class ConfigVars {
     StoreModule.forRoot(),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({
-      name: 'Angular 15 Bootstrap',
+      name: 'Blozz',
       maxAge: 200,
       logOnly: environment.production,
     }),

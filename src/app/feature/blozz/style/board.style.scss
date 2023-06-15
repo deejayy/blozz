@@ -1,0 +1,21 @@
+$box-size: 40px;
+
+$hue: 120deg;
+
+$board-dark: (
+  border-color: rgba(255, 255, 255, 20%),
+  alternate-color: rgba(255, 255, 255, 5%),
+  placed-color: hsla($hue, 100%, 63%, 40%),
+  place-hilight: hsla($hue, 100%, 75%, 60%),
+);
+
+$board-light: (
+  border-color: rgba(0, 0, 0, 20%),
+  alternate-color: rgba(0, 0, 0, 10%),
+  placed-color: hsla($hue, 60%, 31%, 80%),
+  place-hilight: hsla($hue, 60%, 31%, 60%),
+);
+
+$bevel-top: rgba(255, 255, 255, 10%);
+$bevel-bottom: rgba(0, 0, 0, 10%);
+$bevel-size: 3px;

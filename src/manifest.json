@@ -1,6 +1,6 @@
 {
-  "short_name": "Angular 16",
-  "name": "Angular 16 Project Bootstrap",
+  "short_name": "Blozz",
+  "name": "Blozz - A sudoku block puzzle game",
   "icons": [
     {
       "src": "/favicon.png",

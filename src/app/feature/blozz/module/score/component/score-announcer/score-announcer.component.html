@@ -1,0 +1,6 @@
+<div class="score-announce" [ngClass]="{ animate: flash$ | async }" *ngIf="lastPoints$ | async as lastPoint">
+  <div class="point" *ngIf="lastPoint > 0">{{ lastPoint }}</div>
+  <ng-container *ngIf="comboDisplay$ | async as comboDisplay">
+    <div class="combo" *ngIf="comboDisplay > 0">Combo! {{ comboDisplay }}x</div>
+  </ng-container>
+</div>

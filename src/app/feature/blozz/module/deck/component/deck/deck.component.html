@@ -1,0 +1,24 @@
+<div class="deck">
+  <ng-container *ngIf="disabledPieces$ | async as disabledPieces">
+    <ng-container *ngIf="pieceList$ | async as pieceList">
+      <div class="piece-wrapper" *ngFor="let p of [0, 1, 2]" #pieceWrapper>
+        <div
+          class="piece"
+          [draggable]="!disabledPieces[p]"
+          [ngClass]="{ placeable: !disabledPieces[p], dragging: p === (activePiece$ | async) }"
+          #piece
+        >
+          <div class="row" *ngFor="let x of pieceList[p]; let i = index">
+            <div
+              class="cell"
+              *ngFor="let y of pieceList[p]! | matrixWidth; let j = index"
+              [attr.data-col]="j"
+              [attr.data-row]="i"
+              [ngClass]="{ active: pieceList[p]?.[i]?.[j] }"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DEMO_ROUTES } from '@feature/demo/demo-routing-parent';
+import { BLOZZ_ROUTES } from '@feature/blozz/blozz-routing-parent';
 
-const routes: Routes = [...DEMO_ROUTES];
+const routes: Routes = [...BLOZZ_ROUTES];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

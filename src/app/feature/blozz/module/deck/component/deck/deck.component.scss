@@ -1,0 +1,67 @@
+@use 'sass:map';
+@import 'app-theme';
+@import '../../../../style/board.style';
+
+.deck {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+
+  .piece-wrapper {
+    min-height: calc(4 * #{$box-size} + 2 * 40px);
+    flex-basis: 0;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 0;
+  }
+}
+
+.piece {
+  cursor: move;
+  user-select: none;
+  border: 1px solid transparent;
+  border-collapse: collapse;
+
+  --color: #{map.get($board-dark, border-color)};
+
+  @media (prefers-color-scheme: light) {
+    --color: #{map.get($board-light, border-color)};
+  }
+
+  &.placeable {
+    --color: #{map.get($board-dark, placed-color)};
+
+    @media (prefers-color-scheme: light) {
+      --color: #{map.get($board-light, placed-color)};
+    }
+  }
+
+  .row {
+    display: flex;
+    height: $box-size;
+  }
+
+  .cell {
+    cursor: move;
+    width: $box-size;
+
+    &.active {
+      box-shadow: inset $bevel-size $bevel-size $bevel-size 0 $bevel-top,
+        inset calc(-1 * $bevel-size) calc(-1 * $bevel-size) $bevel-size 0 $bevel-bottom;
+      background-color: var(--color);
+    }
+  }
+
+  &.dragging {
+    .cell.active {
+      background-color: map.get($board-dark, place-hilight);
+
+      @media (prefers-color-scheme: light) {
+        background-color: map.get($board-light, place-hilight);
+      }
+    }
+  }
+}

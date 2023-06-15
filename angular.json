@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular16-project-bootstrap": {
+    "blozz": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -21,7 +21,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular16-project-bootstrap",
+            "outputPath": "dist/blozz",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -92,10 +92,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular16-project-bootstrap:build:production"
+              "browserTarget": "blozz:build:production"
             },
             "development": {
-              "browserTarget": "angular16-project-bootstrap:build:development"
+              "browserTarget": "blozz:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -103,7 +103,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular16-project-bootstrap:build"
+            "browserTarget": "blozz:build"
           }
         },
         "test": {

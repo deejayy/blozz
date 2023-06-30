@@ -5,7 +5,7 @@ import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
 import { generatePiece, getTargetTouch, getTouchCoords } from '@feature/blozz/module/deck/helper/deck.helper';
 import { DeckFacade } from '@feature/blozz/module/deck/store/deck.facade';
 import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
-import { debounceTime, delay, filter, fromEvent, map, merge, Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, debounceTime, delay, filter, fromEvent, map, merge, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-deck',
@@ -179,6 +179,7 @@ export class DeckComponent implements AfterViewInit, OnDestroy {
     );
 
     this.subs.add(this.deckFacade.gameOver$.pipe(debounceTime(0), filter(Boolean)).subscribe(() => this.newDeck()));
+    setTimeout(() => this.newDeck(), 0);
   }
 
   public newDeck() {

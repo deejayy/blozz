@@ -5,3 +5,23 @@
   align-items: center;
   justify-content: center;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+
+  ::ng-deep {
+    .mdc-icon-button {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.score {
+  flex-grow: 1;
+}
+
+.settings {
+  padding: 0 16px;
+}

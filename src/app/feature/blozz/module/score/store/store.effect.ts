@@ -30,7 +30,7 @@ export class ScoreEffects {
         let newHighScore: number = highScore;
 
         try {
-          const storedHighScore = parseInt(localStorage.getItem('highScore') ?? '');
+          const storedHighScore = parseInt(localStorage.getItem('highScore') ?? '0');
           newHighScore = Math.max(storedHighScore, highScore);
           localStorage.setItem('highScore', newHighScore.toString());
         } catch {

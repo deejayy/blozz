@@ -1,6 +1,13 @@
 <div class="blozz">
-  <div class="score">
-    <app-score></app-score>
+  <div class="header">
+    <div class="settings">
+      <button mat-icon-button [routerLink]="'/settings'">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </div>
+    <div class="score">
+      <app-score></app-score>
+    </div>
   </div>
   <div class="board">
     <app-score-announcer></app-score-announcer>

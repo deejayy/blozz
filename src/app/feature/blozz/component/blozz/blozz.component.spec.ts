@@ -11,6 +11,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { BoardModule } from '../../module/board/board.module';
 import { BlozzComponent } from './blozz.component';
+import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
 
 describe('BlozzComponent', () => {
   let component: BlozzComponent;
@@ -32,6 +33,7 @@ describe('BlozzComponent', () => {
         MatButtonModule,
         MatSlideToggleModule,
       ],
+      providers: [SettingsFacade],
     });
     fixture = TestBed.createComponent(BlozzComponent);
     component = fixture.componentInstance;

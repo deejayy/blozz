@@ -1,9 +1,9 @@
 import { SettingsActions } from '@feature/blozz/module/settings/store/settings.actions';
-import { initialSettingsState } from '@feature/blozz/module/settings/store/settings.state';
-import { createFeature, createReducer } from '@ngrx/store';
+import { SettingsState, initialSettingsState } from '@feature/blozz/module/settings/store/settings.state';
+import { ActionReducer, createFeature, createReducer, createSelector } from '@ngrx/store';
 import { produceOn } from '@shared/helper/produce-on';
 
-const settingsReducer = createReducer(
+export const settingsReducer = createReducer(
   initialSettingsState,
   produceOn(SettingsActions.toggleTetrisMode, (state) => {
     state.tetrisMode = !state.tetrisMode;
@@ -11,9 +11,38 @@ const settingsReducer = createReducer(
   produceOn(SettingsActions.toggleAllowUndo, (state) => {
     state.allowUndo = !state.allowUndo;
   }),
+  produceOn(SettingsActions.acknowledgeUpdate, (state) => {
+    state.ackUpdate = state.latestUpdate;
+  }),
 );
 
 export const settingsFeature = createFeature({
   name: 'settings',
   reducer: settingsReducer,
+  extraSelectors: ({ selectLatestUpdate, selectAckUpdate }) => ({
+    selectNewFeatures: createSelector(
+      selectLatestUpdate,
+      selectAckUpdate,
+      (latestUpdate, ackUpdate) => latestUpdate.toString() !== ackUpdate?.toString(),
+    ),
+  }),
 });
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const settingsMetaReducer = (reducer: ActionReducer<{ settings: SettingsState }>): ActionReducer<{ settings: SettingsState }> => {
+  return (state, action) => {
+    const newState = reducer(state, action);
+
+    if (action.type === '@ngrx/store/init') {
+      try {
+        const ackDate: string | undefined = localStorage.getItem('ackDate') ?? undefined;
+
+        newState.settings.ackUpdate = ackDate ? new Date(ackDate) : undefined;
+      } catch (e) {
+        console.error('Cannot acccess localStorage', e);
+      }
+    }
+
+    return newState;
+  };
+};

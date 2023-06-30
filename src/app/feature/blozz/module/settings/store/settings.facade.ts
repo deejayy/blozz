@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 export class SettingsFacade {
   public tetrisMode$: Observable<boolean> = this.store.select(settingsFeature.selectTetrisMode);
   public allowUndo$: Observable<boolean> = this.store.select(settingsFeature.selectAllowUndo);
+  public newFeatures$: Observable<boolean> = this.store.select(settingsFeature.selectNewFeatures);
+  public latestUpdate$: Observable<Date> = this.store.select(settingsFeature.selectLatestUpdate);
 
   constructor(private store: Store<SettingsState>) {}
 
@@ -18,5 +20,9 @@ export class SettingsFacade {
 
   public toggleAllowUndo() {
     this.store.dispatch(SettingsActions.toggleAllowUndo());
+  }
+
+  public acknowledgeUpdate() {
+    this.store.dispatch(SettingsActions.acknowledgeUpdate());
   }
 }

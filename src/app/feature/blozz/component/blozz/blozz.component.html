@@ -2,7 +2,7 @@
   <div class="header">
     <div class="settings">
       <button mat-icon-button [routerLink]="'/settings'">
-        <mat-icon>settings</mat-icon>
+        <mat-icon [matBadge]="(newFeatures$ | async) === true ? '.' : ''" matBadgeSize="small" matBadgeColor="warn">settings</mat-icon>
       </button>
     </div>
     <div class="score">

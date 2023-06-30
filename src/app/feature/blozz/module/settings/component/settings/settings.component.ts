@@ -12,7 +12,9 @@ export class SettingsComponent {
   public tetrisMode$: Observable<boolean> = this.settingsFacade.tetrisMode$;
   public allowUndo$: Observable<boolean> = this.settingsFacade.allowUndo$;
 
-  constructor(private settingsFacade: SettingsFacade) {}
+  constructor(private settingsFacade: SettingsFacade) {
+    this.settingsFacade.acknowledgeUpdate();
+  }
 
   public toggleTetrisMode() {
     this.settingsFacade.toggleTetrisMode();

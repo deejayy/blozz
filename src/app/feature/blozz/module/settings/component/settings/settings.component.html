@@ -10,7 +10,7 @@
       <mat-slide-toggle [checked]="tetrisMode$ | async" (change)="toggleTetrisMode()">Tetris mode</mat-slide-toggle>
     </div>
     <div class="option">
-      <mat-slide-toggle [checked]="allowUndo$ | async" (change)="toggleAllowUndo()">Allow undo</mat-slide-toggle>
+      <mat-slide-toggle [checked]="allowUndo$ | async" (change)="toggleAllowUndo()" [disabled]="true">Allow undo (coming soon)</mat-slide-toggle>
     </div>
   </div>
 </div>

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BlozzRoutingModule } from '@feature/blozz/blozz-routing.module';
@@ -11,6 +12,16 @@ import { BlozzComponent } from './component/blozz/blozz.component';
 
 @NgModule({
   declarations: [BlozzComponent],
-  imports: [BlozzRoutingModule, BoardModule, CommonModule, DeckModule, MatButtonModule, MatIconModule, ScoreModule, SettingsModule],
+  imports: [
+    BlozzRoutingModule,
+    BoardModule,
+    CommonModule,
+    DeckModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatIconModule,
+    ScoreModule,
+    SettingsModule,
+  ],
 })
 export class BlozzModule {}

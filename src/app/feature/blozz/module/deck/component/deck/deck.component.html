@@ -20,7 +20,7 @@
             </div>
           </div>
         </div>
-        <div class="rotate" *ngIf="tetrisMode$ | async">
+        <div class="rotate" *ngIf="(tetrisMode$ | async) === true && pieceList[p]!.length > 0">
           <button mat-icon-button (click)="rotate(p)">
             <mat-icon>cached</mat-icon>
           </button>

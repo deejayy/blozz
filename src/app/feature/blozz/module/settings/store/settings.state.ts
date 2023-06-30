@@ -6,7 +6,7 @@ export interface SettingsState {
 }
 
 export const initialSettingsState: SettingsState = {
-  tetrisMode: true,
+  tetrisMode: false,
   allowUndo: false,
   latestUpdate: new Date('2023-06-30 22:20:00'),
   ackUpdate: undefined,

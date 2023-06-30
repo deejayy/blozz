@@ -3,10 +3,11 @@ import { hasOverlap, pieceValue } from '@feature/blozz/module/board/helper/board
 import { Piece, TOUCH_DISTANCE } from '@feature/blozz/module/board/model/board.model';
 import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
 import { generatePiece, getTargetTouch, getTouchCoords } from '@feature/blozz/module/deck/helper/deck.helper';
+import { pieceSetVariants } from '@feature/blozz/module/deck/model/piece-set';
 import { DeckFacade } from '@feature/blozz/module/deck/store/deck.facade';
 import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
 import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
-import { Observable, Subscription, debounceTime, delay, filter, fromEvent, map, merge, of, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, debounceTime, delay, filter, fromEvent, map, merge, of, switchMap, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-deck',
@@ -191,7 +192,10 @@ export class DeckComponent implements AfterViewInit, OnDestroy {
   }
 
   public newDeck() {
-    this.deckFacade.setPieces([generatePiece(), generatePiece(), generatePiece()]);
+    this.settingsFacade.tetrisMode$.pipe(take(1)).subscribe((tetrisMode: boolean) => {
+      const mode = tetrisMode ? pieceSetVariants.TETRIS : pieceSetVariants.STANDARD;
+      this.deckFacade.setPieces([generatePiece(mode), generatePiece(mode), generatePiece(mode)]);
+    });
     this.releasePiece();
   }
 

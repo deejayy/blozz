@@ -21,6 +21,10 @@ export class DeckFacade {
     this.store.dispatch(DeckActions.removePiece({ pieceNum }));
   }
 
+  public rotatePiece(pieceNum: number) {
+    this.store.dispatch(DeckActions.rotatePiece({ pieceNum }));
+  }
+
   public setPieces(pieces: Piece[]) {
     this.store.dispatch(DeckActions.setPieces({ pieces }));
   }

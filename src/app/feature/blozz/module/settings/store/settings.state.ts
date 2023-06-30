@@ -4,6 +4,6 @@ export interface SettingsState {
 }
 
 export const initialSettingsState: SettingsState = {
-  tetrisMode: false,
+  tetrisMode: true,
   allowUndo: false,
 };

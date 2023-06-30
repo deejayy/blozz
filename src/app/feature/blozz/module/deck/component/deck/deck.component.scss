@@ -8,6 +8,14 @@
   justify-content: space-around;
   gap: 12px;
 
+  .piece-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+
   .piece-wrapper {
     min-height: calc(4 * #{$box-size} + 2 * 40px);
     flex-basis: 0;

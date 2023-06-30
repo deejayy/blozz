@@ -7,6 +7,9 @@ import { MatrixWidthPipe } from '@feature/blozz/pipe/matrix-width.pipe';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
 import { DeckComponent } from './deck.component';
 
 describe('DeckComponent', () => {
@@ -16,8 +19,16 @@ describe('DeckComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [DeckComponent, MatrixWidthPipe],
-      imports: [BoardModule, EffectsModule.forRoot(), ScoreModule, StoreModule.forRoot(), StoreModule.forFeature(deckFeature)],
-      providers: [DeckFacade],
+      imports: [
+        BoardModule,
+        EffectsModule.forRoot(),
+        ScoreModule,
+        StoreModule.forRoot(),
+        StoreModule.forFeature(deckFeature),
+        MatButtonModule,
+        MatIconModule,
+      ],
+      providers: [DeckFacade, SettingsFacade],
     });
     fixture = TestBed.createComponent(DeckComponent);
     component = fixture.componentInstance;

@@ -1,7 +1,8 @@
 import { pieceCanBePlaced } from '@feature/blozz/module/board/helper/board.helper';
+import { rotatePiece } from '@feature/blozz/module/deck/helper/deck.helper';
 import { DeckActions } from '@feature/blozz/module/deck/store/deck.actions';
 import { initialDeckState } from '@feature/blozz/module/deck/store/deck.state';
-import { createSelector, createFeature, createReducer } from '@ngrx/store';
+import { createFeature, createReducer, createSelector } from '@ngrx/store';
 import { produceOn } from '@shared/helper/produce-on';
 
 const deckReducer = createReducer(
@@ -31,6 +32,9 @@ const deckReducer = createReducer(
   }),
   produceOn(DeckActions.setStartCoords, (state, action) => {
     state.startCoords = action.coords;
+  }),
+  produceOn(DeckActions.rotatePiece, (state, action) => {
+    state.pieces[action.pieceNum] = rotatePiece(state.pieces[action.pieceNum] ?? []);
   }),
   produceOn(DeckActions.checkPieces, (state, action) => {
     state.pieces.forEach((piece, idx) => {

@@ -1,3 +1,10 @@
+export const rotateDirection = {
+  RIGHT: 'right',
+  LEFT: 'left',
+} as const;
+
+export type RotateDirection = (typeof rotateDirection)[keyof typeof rotateDirection];
+
 export const PIECE_SET: string[] = [
   '.\n.\n..',
   '..\n.\n.',

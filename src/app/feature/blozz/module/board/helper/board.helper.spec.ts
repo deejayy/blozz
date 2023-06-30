@@ -428,7 +428,7 @@ describe('hasOverlap', () => {
 });
 
 describe('convertPiece', () => {
-  it('should convert a string representation of a chess piece into a 2D array of integers', () => {
+  it('should convert a string representation of a piece into a 2D array of integers', () => {
     const pieceString = '.#.\n#.#\n.#.';
     const expectedPiece: Piece = [
       [1, 0, 1],
@@ -439,7 +439,7 @@ describe('convertPiece', () => {
     expect(result).toEqual(expectedPiece);
   });
 
-  it('should handle a string representation of a chess piece with all black squares', () => {
+  it('should handle a string representation of a piece with all black squares', () => {
     const pieceString = '###\n###\n###';
     const expectedPiece: Piece = [
       [0, 0, 0],
@@ -450,7 +450,7 @@ describe('convertPiece', () => {
     expect(result).toEqual(expectedPiece);
   });
 
-  it('should handle a string representation of a chess piece with all white squares', () => {
+  it('should handle a string representation of a piece with all white squares', () => {
     const pieceString = '...\n...\n...';
     const expectedPiece: Piece = [
       [1, 1, 1],
@@ -461,9 +461,16 @@ describe('convertPiece', () => {
     expect(result).toEqual(expectedPiece);
   });
 
-  it('should handle a string representation of a chess piece with a single square', () => {
+  it('should handle a string representation of a piece with a single square', () => {
     const pieceString = '.';
     const expectedPiece: Piece = [[1]];
+    const result = convertPiece(pieceString);
+    expect(result).toEqual(expectedPiece);
+  });
+
+  it('should handle a string representation of a piece with assymetric input', () => {
+    const pieceString = '.\n .\n  .\n   .';
+    const expectedPiece: Piece = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
     const result = convertPiece(pieceString);
     expect(result).toEqual(expectedPiece);
   });

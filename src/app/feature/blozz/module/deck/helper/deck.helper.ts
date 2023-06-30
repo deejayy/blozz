@@ -1,6 +1,6 @@
 import { convertPiece } from '@feature/blozz/module/board/helper/board.helper';
 import { BOX_SIZE, Coord, Piece, TOUCH_DISTANCE } from '@feature/blozz/module/board/model/board.model';
-import { PIECE_SET } from '@feature/blozz/module/deck/model/piece-set';
+import { PIECE_SET, RotateDirection, rotateDirection } from '@feature/blozz/module/deck/model/piece-set';
 
 export const getTargetTouch = (event: TouchEvent): { targetX: number; targetY: number } => {
   const touch = event.targetTouches[0] ?? event.changedTouches[0];
@@ -29,6 +29,19 @@ export const getTouchCoords = (event: TouchEvent, relativeTo: Coord = { x: 0, y:
   };
 };
 
+export const pieceWidth = (value: number[][]) => value.reduce((acc, curr) => (curr.length > acc.length ? curr : acc), []);
+
 export const generatePiece = (): Piece => {
   return convertPiece(PIECE_SET[Math.floor(Math.random() * PIECE_SET.length)]!);
+};
+
+export const rotatePiece = (piece: Piece, direction: RotateDirection = rotateDirection.RIGHT): Piece => {
+  const transpose = (m: Piece): Piece => m[0]!.map((_, i) => m.map((x) => x[i]!).reverse());
+
+  if (direction === rotateDirection.RIGHT) {
+    return transpose(piece);
+  }
+
+  console.error('Not implemented');
+  return piece;
 };

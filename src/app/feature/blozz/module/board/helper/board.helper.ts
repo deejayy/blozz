@@ -157,19 +157,24 @@ export const hasOverlap = (board: Board, piece: Piece | undefined, rowPos: numbe
  * @returns A 2D array of integers representing the piece.
  */
 export const convertPiece = (pieceString: string): Piece => {
+  const maxLength = Math.max(...pieceString.split('\n').map((v) => v.length));
+
   return pieceString.split('\n').map((v) =>
-    v.split('').map((p) => {
-      return p === '.' ? 1 : 0;
-    }),
+    v
+      .padEnd(maxLength, ' ')
+      .split('')
+      .map((p) => {
+        return p === '.' ? 1 : 0;
+      }),
   );
 };
 
 /**
- * Calculates the total point value of a chess piece, based on the number of black squares it covers.
+ * Calculates the total point value of a piece, based on the number of black squares it covers.
  *
- * @param piece - The 2D array of integers representing the chess piece.
+ * @param piece - The 2D array of integers representing the piece.
  *
- * @returns The total point value of the chess piece.
+ * @returns The total point value of the piece.
  */
 export const pieceValue = (piece: Piece | undefined): number => {
   return (

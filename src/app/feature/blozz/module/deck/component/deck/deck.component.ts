@@ -5,6 +5,7 @@ import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
 import { generatePiece, getTargetTouch, getTouchCoords } from '@feature/blozz/module/deck/helper/deck.helper';
 import { DeckFacade } from '@feature/blozz/module/deck/store/deck.facade';
 import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
+import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
 import { Observable, Subscription, debounceTime, delay, filter, fromEvent, map, merge, of, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -16,6 +17,8 @@ import { Observable, Subscription, debounceTime, delay, filter, fromEvent, map, 
 export class DeckComponent implements AfterViewInit, OnDestroy {
   @ViewChildren('pieceWrapper') public pieceWrappers!: QueryList<ElementRef<HTMLElement>>;
   @ViewChildren('piece') public pieces!: QueryList<ElementRef<HTMLElement>>;
+
+  public tetrisMode$: Observable<boolean> = this.settingsFacade.tetrisMode$;
 
   public pieceList$: Observable<Piece[]> = this.deckFacade.pieceList$;
   public disabledPieces$: Observable<boolean[]> = this.deckFacade.disabledPieces$;
@@ -31,7 +34,12 @@ export class DeckComponent implements AfterViewInit, OnDestroy {
 
   private subs: Subscription = new Subscription();
 
-  constructor(private deckFacade: DeckFacade, private boardFacade: BoardFacade, private scoreFacade: ScoreFacade) {}
+  constructor(
+    private deckFacade: DeckFacade,
+    private boardFacade: BoardFacade,
+    private scoreFacade: ScoreFacade,
+    private settingsFacade: SettingsFacade,
+  ) {}
 
   // eslint-disable-next-line max-lines-per-function
   public ngAfterViewInit(): void {
@@ -195,6 +203,10 @@ export class DeckComponent implements AfterViewInit, OnDestroy {
     this.deckFacade.clearActivePiece();
     this.boardFacade.hoverItem([], 0, 0);
     this.boardFacade.clearHover();
+  }
+
+  public rotate(pieceNum: number) {
+    this.deckFacade.rotatePiece(pieceNum);
   }
 
   public ngOnDestroy(): void {

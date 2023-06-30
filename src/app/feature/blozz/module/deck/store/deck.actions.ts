@@ -9,4 +9,5 @@ export class DeckActions {
   public static checkPieces = createAction('[Deck] Check Pieces', props<{ board: Board }>());
   public static clearActivePiece = createAction('[Deck] Clear Active Piece');
   public static setStartCoords = createAction('[Deck] Set Start Coordinates', props<{ coords: Coord }>());
+  public static rotatePiece = createAction('[Deck] Rotate Piece', props<{ pieceNum: number }>());
 }

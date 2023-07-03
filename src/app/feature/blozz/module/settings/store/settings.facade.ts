@@ -16,10 +16,6 @@ export class SettingsFacade {
 
   constructor(private store: Store<SettingsState>) {}
 
-  public toggleTetrisMode() {
-    this.store.dispatch(SettingsActions.toggleTetrisMode());
-  }
-
   public toggleAllowUndo() {
     this.store.dispatch(SettingsActions.toggleAllowUndo());
   }

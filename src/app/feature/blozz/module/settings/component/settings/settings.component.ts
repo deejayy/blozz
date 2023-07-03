@@ -40,10 +40,6 @@ export class SettingsComponent {
     this.settingsFacade.acknowledgeUpdate();
   }
 
-  public toggleTetrisMode() {
-    this.settingsFacade.toggleTetrisMode();
-  }
-
   public toggleAllowUndo() {
     this.settingsFacade.toggleAllowUndo();
   }

@@ -6,9 +6,6 @@ import { produceOn } from '@shared/helper/produce-on';
 
 export const settingsReducer = createReducer(
   initialSettingsState,
-  produceOn(SettingsActions.toggleTetrisMode, (state) => {
-    state.gameMode = gameModes.TETRIS;
-  }),
   produceOn(SettingsActions.toggleAllowUndo, (state) => {
     state.allowUndo = !state.allowUndo;
   }),

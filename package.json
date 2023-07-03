@@ -13,6 +13,7 @@
     "prepare": "git config core.hooksPath ./git-hooks || exit 0",
     "precommit": "npm run lint-staged"
   },
+  "license": "AGPL-3.0",
   "private": true,
   "lint-staged": {
     "*.ts": [

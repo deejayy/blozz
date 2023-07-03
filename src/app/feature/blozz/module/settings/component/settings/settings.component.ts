@@ -33,7 +33,6 @@ export class SettingsComponent {
     {
       title: 'Extreme blocks',
       id: 'extreme',
-      disabled: true,
     },
   ];
 

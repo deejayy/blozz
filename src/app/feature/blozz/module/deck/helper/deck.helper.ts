@@ -31,8 +31,12 @@ export const getTouchCoords = (event: TouchEvent, relativeTo: Coord = { x: 0, y:
 
 export const pieceWidth = (value: number[][]) => value.reduce((acc, curr) => (curr.length > acc.length ? curr : acc), []);
 
-export const generatePiece = (pieceSet: PieceSetVariant = pieceSetVariants.TETRIS): Piece => {
+export const generatePiece = (pieceSet: PieceSetVariant = pieceSetVariants.STANDARD): Piece => {
   const selectedPieceSet = pieceSets[pieceSet];
+  if (pieceSet === pieceSetVariants.EXTREME) {
+    return Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => Math.round(Math.random())));
+  }
+
   return convertPiece(selectedPieceSet[Math.floor(Math.random() * selectedPieceSet.length)]!);
 };
 

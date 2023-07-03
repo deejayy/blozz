@@ -91,7 +91,9 @@ export class BoardComponent implements AfterViewInit, OnDestroy {
 
         if (rowsMatch + colsMatch + boxesMatch > 0) {
           this.scoreFacade.addScore(BOARD_WIDTH * (rowsMatch + colsMatch + boxesMatch) ** SCORE_MULTI);
-          this.scoreFacade.addMultiplier(SCORE_COMBO + removals.rows.length + removals.columns.length + removals.blocks.length);
+          if (!tetrisMode) {
+            this.scoreFacade.addMultiplier(SCORE_COMBO + removals.rows.length + removals.columns.length + removals.blocks.length);
+          }
         }
 
         this.deckFacade.checkPieces(board, tetrisMode);

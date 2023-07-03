@@ -53,9 +53,12 @@ export const PIECE_SET: string[] = [
 
 export const TETRAMINOS_SET: string[] = ['....', '.\n...', '  .\n...', '..\n..', ' ..\n..', ' . \n...', '..\n ..'];
 
+export const NULL_SET: string[] = [];
+
 export const pieceSetVariants = {
   STANDARD: 'standard',
   TETRIS: 'tetris',
+  EXTREME: 'extreme',
 } as const;
 
 export type PieceSetVariant = (typeof pieceSetVariants)[keyof typeof pieceSetVariants];
@@ -63,4 +66,5 @@ export type PieceSetVariant = (typeof pieceSetVariants)[keyof typeof pieceSetVar
 export const pieceSets: Record<PieceSetVariant, string[]> = {
   [pieceSetVariants.STANDARD]: PIECE_SET,
   [pieceSetVariants.TETRIS]: TETRAMINOS_SET,
+  [pieceSetVariants.EXTREME]: NULL_SET,
 };

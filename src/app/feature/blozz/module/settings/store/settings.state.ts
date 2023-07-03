@@ -1,12 +1,14 @@
+import { GameMode, gameModes } from '@feature/blozz/module/settings/model/settings.model';
+
 export interface SettingsState {
-  tetrisMode: boolean;
+  gameMode: GameMode;
   allowUndo: boolean;
   latestUpdate: Date;
   ackUpdate: Date | undefined;
 }
 
 export const initialSettingsState: SettingsState = {
-  tetrisMode: false,
+  gameMode: gameModes.STANDARD,
   allowUndo: false,
   latestUpdate: new Date('2023-06-30 22:20:00'),
   ackUpdate: undefined,

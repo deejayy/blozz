@@ -6,11 +6,20 @@
     <div class="nav-title">Settings</div>
   </div>
   <div class="options">
-    <div class="option">
-      <mat-slide-toggle [checked]="tetrisMode$ | async" (change)="toggleTetrisMode()">Tetris mode</mat-slide-toggle>
+    <div class="multi">
+      <div class="multi-title">Game mode</div>
+      <div class="multi-list">
+        <mat-radio-group class="multi-group" [value]="gameMode$ | async" (change)="setGameMode($event)">
+          <mat-radio-button class="multi-option" *ngFor="let mode of gameModeList" [value]="mode.id" [disabled]="mode.disabled">
+            {{ mode.title }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
     </div>
     <div class="option">
-      <mat-slide-toggle [checked]="allowUndo$ | async" (change)="toggleAllowUndo()" [disabled]="true">Allow undo (coming soon)</mat-slide-toggle>
+      <mat-slide-toggle [checked]="allowUndo$ | async" (change)="toggleAllowUndo()" [disabled]="true">
+        Allow undo (coming soon)
+      </mat-slide-toggle>
     </div>
     <div class="option">
       <mat-slide-toggle [disabled]="true">Zen mode - only perfect blocks (coming soon)</mat-slide-toggle>
@@ -20,9 +29,6 @@
     </div>
     <div class="option">
       <mat-slide-toggle [disabled]="true">Only unique blocks per deck (coming soon)</mat-slide-toggle>
-    </div>
-    <div class="option">
-      <mat-slide-toggle [disabled]="true">Extreme blocks (coming soon)</mat-slide-toggle>
     </div>
     <div class="option">
       <mat-slide-toggle [disabled]="true">Show hints (coming soon)</mat-slide-toggle>

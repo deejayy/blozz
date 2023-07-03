@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
 import { SettingsEffects } from '@feature/blozz/module/settings/store/settings.effect';
@@ -18,6 +19,7 @@ import { SettingsComponent } from './component/settings/settings.component';
     EffectsModule.forFeature(SettingsEffects),
     MatButtonModule,
     MatIconModule,
+    MatRadioModule,
     MatSlideToggleModule,
     RouterModule,
     StoreModule.forFeature(settingsFeature),

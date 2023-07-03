@@ -38,7 +38,7 @@ const deckReducer = createReducer(
   }),
   produceOn(DeckActions.checkPieces, (state, action) => {
     state.pieces.forEach((piece, idx) => {
-      state.disabledPieces[idx] = piece.length === 0 || !pieceCanBePlaced(action.board, piece);
+      state.disabledPieces[idx] = piece.length === 0 || !pieceCanBePlaced(action.board, piece, action.rotation);
     });
   }),
 );

@@ -11,7 +11,8 @@ import { Board, MINI_GRID_SIZE } from '@feature/blozz/module/board/model/board.m
 import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
 import { DeckFacade } from '@feature/blozz/module/deck/store/deck.facade';
 import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
-import { debounceTime, delay, filter, fromEvent, map, Observable, of, Subscription, switchMap } from 'rxjs';
+import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
+import { debounceTime, delay, filter, fromEvent, map, Observable, of, Subscription, switchMap, withLatestFrom } from 'rxjs';
 
 export const BOARD_WIDTH = 9;
 export const BOARD_HEIGHT = 9;
@@ -35,7 +36,12 @@ export class BoardComponent implements AfterViewInit, OnDestroy {
 
   private subs: Subscription = new Subscription();
 
-  constructor(private boardFacade: BoardFacade, private deckFacade: DeckFacade, private scoreFacade: ScoreFacade) {
+  constructor(
+    private boardFacade: BoardFacade,
+    private deckFacade: DeckFacade,
+    private scoreFacade: ScoreFacade,
+    private settingsFacade: SettingsFacade,
+  ) {
     this.startGame();
   }
 
@@ -53,7 +59,7 @@ export class BoardComponent implements AfterViewInit, OnDestroy {
     this.drop$ = fromEvent<DragEvent>(this.boardElem.nativeElement, 'drop').pipe(map((event) => ({ event })));
 
     this.subs.add(
-      this.boardFacade.rawBoard$.subscribe((board) => {
+      this.boardFacade.rawBoard$.pipe(withLatestFrom(this.settingsFacade.tetrisMode$)).subscribe(([board, tetrisMode]) => {
         this.boardFacade.setCorner({
           x: this.boardElem.nativeElement.offsetLeft,
           y: this.boardElem.nativeElement.offsetTop,
@@ -88,7 +94,7 @@ export class BoardComponent implements AfterViewInit, OnDestroy {
           this.scoreFacade.addMultiplier(SCORE_COMBO + removals.rows.length + removals.columns.length + removals.blocks.length);
         }
 
-        this.deckFacade.checkPieces(board);
+        this.deckFacade.checkPieces(board, tetrisMode);
       }),
     );
 

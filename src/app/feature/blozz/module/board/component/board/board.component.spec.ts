@@ -8,6 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { BoardComponent } from './board.component';
+import { SettingsModule } from '@feature/blozz/module/settings/settings.module';
 
 describe('BoardComponent', () => {
   let component: BoardComponent;
@@ -15,7 +16,14 @@ describe('BoardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DeckModule, EffectsModule.forRoot(), ScoreModule, StoreModule.forRoot(), StoreModule.forFeature(boardFeature)],
+      imports: [
+        DeckModule,
+        EffectsModule.forRoot(),
+        ScoreModule,
+        SettingsModule,
+        StoreModule.forRoot(),
+        StoreModule.forFeature(boardFeature),
+      ],
       declarations: [BoardComponent, AlternatePipe],
       providers: [BoardFacade],
     });

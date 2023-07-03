@@ -37,8 +37,8 @@ export class DeckFacade {
     this.store.dispatch(DeckActions.disablePiece({ pieceNum }));
   }
 
-  public checkPieces(board: Board) {
-    this.store.dispatch(DeckActions.checkPieces({ board }));
+  public checkPieces(board: Board, rotation: boolean = false) {
+    this.store.dispatch(DeckActions.checkPieces({ board, rotation }));
   }
 
   public clearActivePiece() {

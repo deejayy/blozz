@@ -1,4 +1,6 @@
 import { Board, BOX_SIZE, Coord, HOVER_STATE, MINI_GRID_SIZE, Piece, PLACE_STATE } from '@feature/blozz/module/board/model/board.model';
+import { rotatePiece } from '@feature/blozz/module/deck/helper/deck.helper';
+import { rotateDirection } from '@feature/blozz/module/deck/model/piece-set';
 import { produce } from 'immer';
 
 /**
@@ -238,13 +240,22 @@ export const checkBlocks = (board: Board, clearMethod: (rowIndex: number, column
   }
 };
 
-export const pieceCanBePlaced = (board: Board, piece: Piece): boolean => {
+export const pieceCanBePlaced = (board: Board, piece: Piece, rotation: boolean = false): boolean => {
   let result: boolean = false;
 
   board.forEach((row, i) => {
-    row.forEach((_, j) => {
+    row.forEach((_1, j) => {
       if (!hasOverlap(board, piece, i, j)) {
         result = true;
+      }
+      if (rotation) {
+        Array.from({ length: 3 }, () => piece).reduce((_2, curr) => {
+          const newPiece = rotatePiece(curr, rotateDirection.RIGHT);
+          if (!hasOverlap(board, newPiece, i, j)) {
+            result = true;
+          }
+          return newPiece;
+        }, piece);
       }
     });
   });

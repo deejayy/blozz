@@ -10,6 +10,6 @@ export interface SettingsState {
 export const initialSettingsState: SettingsState = {
   gameMode: gameModes.STANDARD,
   allowUndo: false,
-  latestUpdate: new Date('2023-06-30 22:20:00'),
+  latestUpdate: new Date('2023-07-03 21:25:00'),
   ackUpdate: undefined,
 };

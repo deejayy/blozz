@@ -2,7 +2,8 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
 import { hasOverlap, pieceValue } from '@feature/blozz/module/board/helper/board.helper';
 import { Piece, TOUCH_DISTANCE } from '@feature/blozz/module/board/model/board.model';
 import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
-import { generatePiece, getTargetTouch, getTouchCoords } from '@feature/blozz/module/deck/helper/deck.helper';
+import { generatePieces, getTargetTouch, getTouchCoords } from '@feature/blozz/module/deck/helper/deck.helper';
+import { DECK_SIZE } from '@feature/blozz/module/deck/model/piece-set';
 import { DeckFacade } from '@feature/blozz/module/deck/store/deck.facade';
 import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
 import { GameMode } from '@feature/blozz/module/settings/model/settings.model';
@@ -18,6 +19,8 @@ import { Observable, Subscription, debounceTime, delay, filter, fromEvent, map, 
 export class DeckComponent implements AfterViewInit, OnDestroy {
   @ViewChildren('pieceWrapper') public pieceWrappers!: QueryList<ElementRef<HTMLElement>>;
   @ViewChildren('piece') public pieces!: QueryList<ElementRef<HTMLElement>>;
+
+  public deckSize: number = DECK_SIZE;
 
   public tetrisMode$: Observable<boolean> = this.settingsFacade.tetrisMode$;
 
@@ -193,7 +196,7 @@ export class DeckComponent implements AfterViewInit, OnDestroy {
 
   public newDeck() {
     this.settingsFacade.gameMode$.pipe(take(1)).subscribe((gameMode: GameMode) => {
-      this.deckFacade.setPieces([generatePiece(gameMode), generatePiece(gameMode), generatePiece(gameMode)]);
+      this.deckFacade.setPieces(generatePieces(DECK_SIZE, gameMode));
     });
     this.releasePiece();
   }

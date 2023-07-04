@@ -9,9 +9,10 @@ import { ScoreModule } from '@feature/blozz/module/score/score.module';
 import { MatrixWidthPipe } from '@feature/blozz/pipe/matrix-width.pipe';
 import { StoreModule } from '@ngrx/store';
 import { DeckComponent } from './component/deck/deck.component';
+import { NumberToArrayPipe } from './pipe/number-to-array.pipe';
 
 @NgModule({
-  declarations: [DeckComponent, MatrixWidthPipe],
+  declarations: [DeckComponent, MatrixWidthPipe, NumberToArrayPipe],
   imports: [BoardModule, CommonModule, MatButtonModule, MatIconModule, ScoreModule, StoreModule.forFeature(deckFeature)],
   exports: [DeckComponent],
   providers: [DeckFacade],

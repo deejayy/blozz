@@ -5,6 +5,8 @@ export const rotateDirection = {
 
 export type RotateDirection = (typeof rotateDirection)[keyof typeof rotateDirection];
 
+export const DECK_SIZE = 3;
+
 export const PIECE_SET: string[] = [
   '.\n.\n..',
   '..\n.\n.',

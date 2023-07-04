@@ -9,6 +9,7 @@ import { StoreModule } from '@ngrx/store';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NumberToArrayPipe } from '@feature/blozz/module/deck/pipe/number-to-array.pipe';
 import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
 import { DeckComponent } from './deck.component';
 
@@ -18,7 +19,7 @@ describe('DeckComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DeckComponent, MatrixWidthPipe],
+      declarations: [DeckComponent, MatrixWidthPipe, NumberToArrayPipe],
       imports: [
         BoardModule,
         EffectsModule.forRoot(),

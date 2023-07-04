@@ -1,7 +1,7 @@
 <div class="deck">
   <ng-container *ngIf="disabledPieces$ | async as disabledPieces">
     <ng-container *ngIf="pieceList$ | async as pieceList">
-      <div class="piece-control" *ngFor="let p of [0, 1, 2]">
+      <div class="piece-control" *ngFor="let p of deckSize | numberToArray">
         <div class="piece-wrapper" #pieceWrapper>
           <div
             class="piece"

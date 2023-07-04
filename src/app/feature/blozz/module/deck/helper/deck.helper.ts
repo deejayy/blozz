@@ -1,6 +1,7 @@
 import { convertPiece } from '@feature/blozz/module/board/helper/board.helper';
 import { BOX_SIZE, Coord, Piece, TOUCH_DISTANCE } from '@feature/blozz/module/board/model/board.model';
 import { PieceSetVariant, RotateDirection, pieceSetVariants, pieceSets, rotateDirection } from '@feature/blozz/module/deck/model/piece-set';
+import { GameMode } from '@feature/blozz/module/settings/model/settings.model';
 
 export const getTargetTouch = (event: TouchEvent): { targetX: number; targetY: number } => {
   const touch = event.targetTouches[0] ?? event.changedTouches[0];
@@ -38,6 +39,10 @@ export const generatePiece = (pieceSet: PieceSetVariant = pieceSetVariants.STAND
   }
 
   return convertPiece(selectedPieceSet[Math.floor(Math.random() * selectedPieceSet.length)]!);
+};
+
+export const generatePieces = (amount: number, gameMode: GameMode) => {
+  return Array.from({ length: amount }, () => generatePiece(gameMode));
 };
 
 export const rotatePiece = (piece: Piece, direction: RotateDirection = rotateDirection.RIGHT): Piece => {

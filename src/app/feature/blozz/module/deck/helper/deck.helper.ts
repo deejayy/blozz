@@ -46,7 +46,19 @@ export const rotatePiece = (piece: Piece, direction: RotateDirection = rotateDir
 export const pieceWidth = (value: number[][]) => value.reduce((acc, curr) => (curr.length > acc.length ? curr : acc), []);
 
 export const randomizedPiece = () => {
-  return Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => Math.round(Math.random())));
+  const cellSize = 3;
+  const randBound = 5.4;
+
+  const filled = Math.round(Math.random() * randBound) + 1;
+  const cells = Array.from({ length: cellSize * cellSize }, (_, i) => i);
+  const piece: Piece = Array.from({ length: cellSize }, () => Array.from({ length: cellSize }, () => 0));
+
+  for (let i = 0; i < filled; i++) {
+    const cellNo = cells.splice(Math.random() * cells.length, 1)[0]!;
+    piece[Math.floor(cellNo / cellSize)]![cellNo % cellSize] = 1;
+  }
+
+  return piece;
 };
 
 export const generatePieces = (amount: number, gameMode: GameMode) => {

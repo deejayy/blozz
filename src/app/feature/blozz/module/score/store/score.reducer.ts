@@ -6,11 +6,14 @@ import { produceOn } from '@shared/helper/produce-on';
 
 const scoreReducer = createReducer(
   initialScoreState,
-  produceOn(ScoreActions.resetScore, (state) => {
+  produceOn(ScoreActions.resetScore, (state, action) => {
     state.lastScore = state.score;
     state.highScore = Math.max(state.lastScore, state.highScore);
     state.score = 0;
     state.multiplier = 1;
+
+    state.scoreByMode[action.gameMode].highScore = state.highScore;
+    state.scoreByMode[action.gameMode].lastScore = state.lastScore;
   }),
   produceOn(ScoreActions.addScore, (state, action) => {
     if (action.score > BOARD_WIDTH) {
@@ -24,6 +27,7 @@ const scoreReducer = createReducer(
   }),
   produceOn(ScoreActions.setHighScore, (state, action) => {
     state.highScore = action.highScore;
+    state.scoreByMode[action.gameMode].highScore = action.highScore;
   }),
   produceOn(ScoreActions.setMultiplier, (state, action) => {
     state.multiplier = action.multiplier;

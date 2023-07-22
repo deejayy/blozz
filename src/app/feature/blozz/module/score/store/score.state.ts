@@ -1,9 +1,12 @@
+import { GameMode } from '@feature/blozz/module/settings/model/settings.model';
+
 export interface ScoreState {
   score: number;
   lastScore: number;
   highScore: number;
   lastPoint: number;
   multiplier: number;
+  scoreByMode: Record<GameMode, { lastScore: number; highScore: number }>;
 }
 
 export const initialScoreState: ScoreState = {
@@ -12,4 +15,9 @@ export const initialScoreState: ScoreState = {
   highScore: 0,
   lastPoint: 0,
   multiplier: 1,
+  scoreByMode: {
+    extreme: { lastScore: 0, highScore: 0 },
+    standard: { lastScore: 0, highScore: 0 },
+    tetris: { lastScore: 0, highScore: 0 },
+  },
 };

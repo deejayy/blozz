@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import { convertBoard, placePiece, removeBlock, removeColumn, removeRow } from '@feature/blozz/module/board/helper/board.helper';
 import { HOVER_STATE } from '@feature/blozz/module/board/model/board.model';
 import { BoardActions } from '@feature/blozz/module/board/store/board.actions';
@@ -23,7 +24,7 @@ const boardReducer = createReducer(
     state.board = action.board;
   }),
   produceOn(BoardActions.clearHover, (state) => {
-    state.board = state.board.map((row) => row.map((cell) => (cell === HOVER_STATE ? 0 : cell)));
+    state.board = state.board.map((row) => row.map((cell) => (cell & HOVER_STATE ? 0 : cell)));
   }),
   produceOn(BoardActions.placeItem, (state, action) => {
     state.board = placePiece(state.board, action.piece, action.col, action.row);

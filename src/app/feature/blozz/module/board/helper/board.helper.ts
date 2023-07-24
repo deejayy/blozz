@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import { Board, BOX_SIZE, Coord, HOVER_STATE, MINI_GRID_SIZE, Piece, PLACE_STATE } from '@feature/blozz/module/board/model/board.model';
 import { rotatePiece } from '@feature/blozz/module/deck/helper/deck.helper';
 import { rotateDirection } from '@feature/blozz/module/deck/model/piece-set';
@@ -41,7 +42,7 @@ export const placePiece = (board: Board, piece: Piece | undefined, rowPos: numbe
         if (piece[i]![j]) {
           if (newBoard[i + rowPos] !== undefined) {
             if (newBoard[i + rowPos]![j + colPos] !== undefined) {
-              newBoard[i + rowPos]![j + colPos] = PLACE_STATE;
+              newBoard[i + rowPos]![j + colPos] = newBoard[i + rowPos]![j + colPos]! | PLACE_STATE;
             }
           }
         }
@@ -57,7 +58,7 @@ export const hoverPiece = (board: Board, piece: Piece | undefined, rowPos: numbe
         if (piece[i]![j]) {
           if (newBoard[i + rowPos] !== undefined) {
             if (newBoard[i + rowPos]![j + colPos] !== undefined) {
-              newBoard[i + rowPos]![j + colPos] = HOVER_STATE;
+              newBoard[i + rowPos]![j + colPos] = newBoard[i + rowPos]![j + colPos]! | HOVER_STATE;
             }
           }
         }
@@ -194,7 +195,7 @@ export const pieceValue = (piece: Piece | undefined): number => {
  */
 export const checkRows = (board: Board, clearMethod: (rowIndex: number) => void): void => {
   board.forEach((row, i) => {
-    if (row.every((val) => val === PLACE_STATE)) {
+    if (row.every((val) => val & PLACE_STATE)) {
       clearMethod(i);
     }
   });
@@ -211,7 +212,7 @@ export const checkColumns = (board: Board, clearMethod: (columnIndex: number) =>
   for (let i = 0; i < columnSize; i++) {
     let isColumnFull = true;
     for (let j = 0; j < board.length; j++) {
-      if (board[j]![i] !== PLACE_STATE) {
+      if (!(board[j]![i]! & PLACE_STATE)) {
         isColumnFull = false;
       }
     }

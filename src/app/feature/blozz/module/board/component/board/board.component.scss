@@ -33,7 +33,7 @@
       }
     }
 
-    &.active1 {
+    &.placed {
       background-color: map.get($board-dark, placed-color);
 
       @media (prefers-color-scheme: light) {
@@ -41,11 +41,19 @@
       }
     }
 
-    &.active2 {
+    &.hover {
       background-color: map.get($board-dark, border-color);
 
       @media (prefers-color-scheme: light) {
         background-color: map.get($board-light, border-color);
+      }
+    }
+
+    &.hover-match {
+      background-color: red;
+
+      @media (prefers-color-scheme: light) {
+        background-color: blue;
       }
     }
   }

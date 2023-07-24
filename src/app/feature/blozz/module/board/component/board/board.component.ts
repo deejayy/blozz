@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { environment } from '@env/environment';
 import {
   checkBlocks,
   checkColumns,
@@ -48,9 +49,12 @@ export class BoardComponent implements AfterViewInit, OnDestroy {
   private startGame() {
     this.settingsFacade.gameMode$.pipe(take(1)).subscribe((gameMode) => this.scoreFacade.resetScore(gameMode));
     this.boardFacade.clearBoard();
-    // this.boardFacade.setBoard(
-    //   Array.from({ length: BOARD_HEIGHT }, () => Array.from({ length: BOARD_WIDTH }, () => Math.round(Math.random() + 0.1))),
-    // );
+    if (!environment.production) {
+      this.boardFacade.setBoard(
+        // eslint-disable-next-line no-magic-numbers
+        Array.from({ length: BOARD_HEIGHT }, () => Array.from({ length: BOARD_WIDTH }, () => Math.round(Math.random() + 0.1))),
+      );
+    }
   }
 
   // eslint-disable-next-line max-lines-per-function

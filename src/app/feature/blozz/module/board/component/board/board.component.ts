@@ -12,7 +12,7 @@ import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
 import { DeckFacade } from '@feature/blozz/module/deck/store/deck.facade';
 import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
 import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
-import { debounceTime, delay, filter, fromEvent, map, Observable, of, Subscription, switchMap, withLatestFrom } from 'rxjs';
+import { debounceTime, delay, filter, fromEvent, map, Observable, of, Subscription, switchMap, take, withLatestFrom } from 'rxjs';
 
 export const BOARD_WIDTH = 9;
 export const BOARD_HEIGHT = 9;
@@ -46,7 +46,7 @@ export class BoardComponent implements AfterViewInit, OnDestroy {
   }
 
   private startGame() {
-    this.scoreFacade.resetScore();
+    this.settingsFacade.gameMode$.pipe(take(1)).subscribe((gameMode) => this.scoreFacade.resetScore(gameMode));
     this.boardFacade.clearBoard();
     // this.boardFacade.setBoard(
     //   Array.from({ length: BOARD_HEIGHT }, () => Array.from({ length: BOARD_WIDTH }, () => Math.round(Math.random() + 0.1))),

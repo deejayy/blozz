@@ -6,7 +6,7 @@ export interface ScoreState {
   highScore: number;
   lastPoint: number;
   multiplier: number;
-  scoreByMode: Record<GameMode, { lastScore: number; highScore: number }>;
+  scoreByMode: Record<GameMode, { highScore: number }>;
 }
 
 export const initialScoreState: ScoreState = {
@@ -16,8 +16,8 @@ export const initialScoreState: ScoreState = {
   lastPoint: 0,
   multiplier: 1,
   scoreByMode: {
-    extreme: { lastScore: 0, highScore: 0 },
-    standard: { lastScore: 0, highScore: 0 },
-    tetris: { lastScore: 0, highScore: 0 },
+    extreme: { highScore: 0 },
+    standard: { highScore: 0 },
+    tetris: { highScore: 0 },
   },
 };

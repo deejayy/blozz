@@ -13,13 +13,16 @@ import { settingsMetaReducer, settingsReducer } from '@feature/blozz/module/sett
 import { SettingsState } from '@feature/blozz/module/settings/store/settings.state';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ScoreState } from '@feature/blozz/module/score/store/score.state';
+import { scoreMetaReducer, scoreReducer } from '@feature/blozz/module/score/store/score.reducer';
 
 export class ConfigVars {
   public apiUrl!: string;
 }
 
-export const reducers: ActionReducerMap<{ settings: SettingsState }> = {
+export const reducers: ActionReducerMap<{ settings: SettingsState, score: ScoreState }> = {
   settings: settingsReducer,
+  score: scoreReducer,
 };
 
 @NgModule({
@@ -28,7 +31,7 @@ export const reducers: ActionReducerMap<{ settings: SettingsState }> = {
     AppRoutingModule,
     BrowserAnimationsModule,
     FrameModule,
-    StoreModule.forRoot(reducers, { metaReducers: [settingsMetaReducer] }),
+    StoreModule.forRoot(reducers, { metaReducers: [scoreMetaReducer, settingsMetaReducer] }),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({
       name: 'Blozz',

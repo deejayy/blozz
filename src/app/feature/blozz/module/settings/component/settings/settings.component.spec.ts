@@ -8,6 +8,7 @@ import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.fa
 import { settingsFeature } from '@feature/blozz/module/settings/store/settings.reducer';
 import { StoreModule } from '@ngrx/store';
 import { SettingsComponent } from './settings.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -21,6 +22,7 @@ describe('SettingsComponent', () => {
         MatIconModule,
         MatButtonModule,
         MatSlideToggleModule,
+        MatRadioModule,
         RouterTestingModule,
       ],
       declarations: [SettingsComponent],

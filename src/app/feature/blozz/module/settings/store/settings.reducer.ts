@@ -1,7 +1,7 @@
 import { gameModes } from '@feature/blozz/module/settings/model/settings.model';
 import { SettingsActions } from '@feature/blozz/module/settings/store/settings.actions';
 import { SettingsState, initialSettingsState } from '@feature/blozz/module/settings/store/settings.state';
-import { ActionReducer, createFeature, createReducer, createSelector } from '@ngrx/store';
+import { Action, createFeature, createReducer, createSelector } from '@ngrx/store';
 import { produceOn } from '@shared/helper/produce-on';
 
 export const settingsReducer = createReducer(
@@ -31,8 +31,8 @@ export const settingsFeature = createFeature({
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const settingsMetaReducer = (reducer: ActionReducer<{ settings: SettingsState }>): ActionReducer<{ settings: SettingsState }> => {
-  return (state, action) => {
+export const settingsMetaReducer = (reducer: any): any => {
+  return (state: SettingsState, action: Action) => {
     const newState = reducer(state, action);
 
     if (action.type === '@ngrx/store/init') {

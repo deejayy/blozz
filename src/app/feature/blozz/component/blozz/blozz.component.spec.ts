@@ -12,6 +12,8 @@ import { StoreModule } from '@ngrx/store';
 import { BoardModule } from '../../module/board/board.module';
 import { BlozzComponent } from './blozz.component';
 import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatBadgeModule } from '@angular/material/badge';
 
 describe('BlozzComponent', () => {
   let component: BlozzComponent;
@@ -31,6 +33,8 @@ describe('BlozzComponent', () => {
         RouterTestingModule,
         MatIconModule,
         MatButtonModule,
+        MatRadioModule,
+        MatBadgeModule,
         MatSlideToggleModule,
       ],
       providers: [SettingsFacade],

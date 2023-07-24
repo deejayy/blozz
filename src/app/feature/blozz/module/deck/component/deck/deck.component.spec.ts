@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NumberToArrayPipe } from '@feature/blozz/module/deck/pipe/number-to-array.pipe';
 import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
 import { DeckComponent } from './deck.component';
+import { settingsFeature } from '@feature/blozz/module/settings/store/settings.reducer';
 
 describe('DeckComponent', () => {
   let component: DeckComponent;
@@ -26,6 +27,7 @@ describe('DeckComponent', () => {
         ScoreModule,
         StoreModule.forRoot(),
         StoreModule.forFeature(deckFeature),
+        StoreModule.forFeature(settingsFeature),
         MatButtonModule,
         MatIconModule,
       ],

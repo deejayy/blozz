@@ -11,8 +11,11 @@ export class ScoreFacade {
   public score$: Observable<number> = this.store.select(scoreFeature.selectScore);
   public lastScore$: Observable<number> = this.store.select(scoreFeature.selectLastScore);
   public lastPoint$: Observable<number> = this.store.select(scoreFeature.selectLastPoint);
-  public highScore$: Observable<number> = this.store.select(scoreFeature.selectHighScore);
   public multiplier$: Observable<number> = this.store.select(scoreFeature.selectMultiplier);
+  public highScore$: Observable<number> = this.store.select(scoreFeature.selectHighScoreByMode(gameModes.STANDARD));
+  public highScores$: Observable<Record<GameMode, { highScore: number }>> = this.store.select(
+    scoreFeature.selectScoreByMode,
+  );
 
   constructor(private store: Store<ScoreState>) {}
 

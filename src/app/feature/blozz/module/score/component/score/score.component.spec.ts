@@ -3,6 +3,8 @@ import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
 import { scoreFeature } from '@feature/blozz/module/score/store/score.reducer';
 import { StoreModule } from '@ngrx/store';
 
+import { SettingsModule } from '@feature/blozz/module/settings/settings.module';
+import { EffectsModule } from '@ngrx/effects';
 import { ScoreComponent } from './score.component';
 
 describe('ScoreComponent', () => {
@@ -11,7 +13,7 @@ describe('ScoreComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(), StoreModule.forFeature(scoreFeature)],
+      imports: [StoreModule.forRoot(), StoreModule.forFeature(scoreFeature), SettingsModule, EffectsModule.forRoot()],
       declarations: [ScoreComponent],
       providers: [ScoreFacade],
     });

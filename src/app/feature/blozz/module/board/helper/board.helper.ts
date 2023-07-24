@@ -1,8 +1,71 @@
 /* eslint-disable no-bitwise */
-import { Board, BOX_SIZE, Coord, HOVER_STATE, MINI_GRID_SIZE, Piece, PLACE_STATE } from '@feature/blozz/module/board/model/board.model';
+import {
+  Board,
+  BOX_SIZE,
+  Coord,
+  HOVER_MATCH_STATE,
+  HOVER_STATE,
+  MINI_GRID_SIZE,
+  Piece,
+  PLACE_STATE,
+} from '@feature/blozz/module/board/model/board.model';
 import { rotatePiece } from '@feature/blozz/module/deck/helper/deck.helper';
 import { rotateDirection } from '@feature/blozz/module/deck/model/piece-set';
 import { produce } from 'immer';
+
+/**
+ * Checks the rows of a board and clears them if they are filled with `1` value.
+ *
+ * @param board - The board to check.
+ * @param clearMethod - A function to clear the row.
+ */
+export const checkRows = (board: Board, clearMethod: (rowIndex: number) => void): void => {
+  board.forEach((row, i) => {
+    if (row.every((val) => val & PLACE_STATE)) {
+      clearMethod(i);
+    }
+  });
+};
+
+/**
+ * Checks if columns are full and clears them if they are.
+ *
+ * @param board - The game board to check.
+ * @param clearMethod - The function to clear the column.
+ */
+export const checkColumns = (board: Board, clearMethod: (columnIndex: number) => void): void => {
+  const columnSize = board[0]!.length;
+  for (let i = 0; i < columnSize; i++) {
+    let isColumnFull = true;
+    for (let j = 0; j < board.length; j++) {
+      if (!(board[j]![i]! & PLACE_STATE)) {
+        isColumnFull = false;
+      }
+    }
+    if (isColumnFull) {
+      clearMethod(i);
+    }
+  }
+};
+
+/**
+ * Checks if there is a 3x3 block in every 3rd position
+ *
+ * @param board - 2D array representing the game board
+ * @param clearMethod - a callback function to clear columns with a 3x3 block
+ */
+export const checkBlocks = (board: Board, clearMethod: (rowIndex: number, columnIndex: number) => void): void => {
+  const blockExists = (i: number, j: number) =>
+    board.slice(i, i + MINI_GRID_SIZE).every((row) => row.slice(j, j + MINI_GRID_SIZE).every((cell) => !!cell));
+
+  for (let i = 0; i < board.length && board.length > MINI_GRID_SIZE; i += MINI_GRID_SIZE) {
+    for (let j = 0; j < board[0]!.length; j += MINI_GRID_SIZE) {
+      if (blockExists(i, j)) {
+        clearMethod(i, j);
+      }
+    }
+  }
+};
 
 /**
  * Converts a string representation of a game board to a 2D array of numbers.
@@ -51,8 +114,12 @@ export const placePiece = (board: Board, piece: Piece | undefined, rowPos: numbe
   });
 };
 
+export const flattenBoard = (board: Board) => {
+  return board.map((row) => row.map((cell) => (cell ? 1 : 0)));
+};
+
 export const hoverPiece = (board: Board, piece: Piece | undefined, rowPos: number, colPos: number) => {
-  return produce(board, (newBoard) => {
+  const boardWithHover = produce(board, (newBoard) => {
     piece?.forEach((row, i) => {
       row.forEach((_, j) => {
         if (piece[i]![j]) {
@@ -64,7 +131,28 @@ export const hoverPiece = (board: Board, piece: Piece | undefined, rowPos: numbe
         }
       });
     });
+
+    const flatBoard = flattenBoard(newBoard);
+
+    checkColumns(flatBoard, (columnIndex) => {
+      newBoard.forEach((row) => (row[columnIndex] = row[columnIndex]! | HOVER_MATCH_STATE));
+    });
+
+    checkRows(flatBoard, (rowIndex) => {
+      newBoard[rowIndex] = newBoard[rowIndex]!.map((cell) => cell | HOVER_MATCH_STATE);
+    });
+
+    checkBlocks(flatBoard, (rowIndex: number, columnIndex: number) => {
+      for (let i = 0; i < MINI_GRID_SIZE; i++) {
+        for (let j = 0; j < MINI_GRID_SIZE; j++) {
+          newBoard[rowIndex + i]![columnIndex + j] =
+            newBoard[rowIndex + i]![columnIndex + j]! | HOVER_MATCH_STATE;
+        }
+      }
+    });
   });
+
+  return boardWithHover;
 };
 
 /**
@@ -185,60 +273,6 @@ export const pieceValue = (piece: Piece | undefined): number => {
       return acc + curr.reduce((acc2, curr2) => acc2 + curr2, 0);
     }, 0) ?? 0
   );
-};
-
-/**
- * Checks the rows of a board and clears them if they are filled with `1` value.
- *
- * @param board - The board to check.
- * @param clearMethod - A function to clear the row.
- */
-export const checkRows = (board: Board, clearMethod: (rowIndex: number) => void): void => {
-  board.forEach((row, i) => {
-    if (row.every((val) => val & PLACE_STATE)) {
-      clearMethod(i);
-    }
-  });
-};
-
-/**
- * Checks if columns are full and clears them if they are.
- *
- * @param board - The game board to check.
- * @param clearMethod - The function to clear the column.
- */
-export const checkColumns = (board: Board, clearMethod: (columnIndex: number) => void): void => {
-  const columnSize = board[0]!.length;
-  for (let i = 0; i < columnSize; i++) {
-    let isColumnFull = true;
-    for (let j = 0; j < board.length; j++) {
-      if (!(board[j]![i]! & PLACE_STATE)) {
-        isColumnFull = false;
-      }
-    }
-    if (isColumnFull) {
-      clearMethod(i);
-    }
-  }
-};
-
-/**
- * Checks if there is a 3x3 block in every 3rd position
- *
- * @param board - 2D array representing the game board
- * @param clearMethod - a callback function to clear columns with a 3x3 block
- */
-export const checkBlocks = (board: Board, clearMethod: (rowIndex: number, columnIndex: number) => void): void => {
-  const blockExists = (i: number, j: number) =>
-    board.slice(i, i + MINI_GRID_SIZE).every((row) => row.slice(j, j + MINI_GRID_SIZE).every((cell) => !!cell));
-
-  for (let i = 0; i < board.length && board.length > MINI_GRID_SIZE; i += MINI_GRID_SIZE) {
-    for (let j = 0; j < board[0]!.length; j += MINI_GRID_SIZE) {
-      if (blockExists(i, j)) {
-        clearMethod(i, j);
-      }
-    }
-  }
 };
 
 export const pieceCanBePlaced = (board: Board, piece: Piece, rotation: boolean = false): boolean => {

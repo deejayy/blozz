@@ -50,10 +50,10 @@
     }
 
     &.hover-match {
-      background-color: red;
+      background-color: map.get($board-dark, place-hilight);
 
       @media (prefers-color-scheme: light) {
-        background-color: blue;
+        background-color: map.get($board-light, place-hilight);
       }
     }
   }

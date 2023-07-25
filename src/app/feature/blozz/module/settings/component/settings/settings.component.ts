@@ -19,6 +19,7 @@ interface GameModeItem {
 export class SettingsComponent {
   public tetrisMode$: Observable<boolean> = this.settingsFacade.tetrisMode$;
   public allowUndo$: Observable<boolean> = this.settingsFacade.allowUndo$;
+  public zenMode$: Observable<boolean> = this.settingsFacade.zenMode$;
   public gameMode$: Observable<GameMode> = this.settingsFacade.gameMode$;
 
   public gameModeList: GameModeItem[] = [
@@ -42,6 +43,10 @@ export class SettingsComponent {
 
   public toggleAllowUndo() {
     this.settingsFacade.toggleAllowUndo();
+  }
+
+  public toggleZenMode() {
+    this.settingsFacade.toggleZenMode();
   }
 
   public setGameMode(event: MatRadioChange) {

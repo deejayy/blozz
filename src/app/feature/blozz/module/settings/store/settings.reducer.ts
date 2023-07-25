@@ -9,6 +9,9 @@ export const settingsReducer = createReducer(
   produceOn(SettingsActions.toggleAllowUndo, (state) => {
     state.allowUndo = !state.allowUndo;
   }),
+  produceOn(SettingsActions.toggleZenMode, (state) => {
+    state.zenMode = !state.zenMode;
+  }),
   produceOn(SettingsActions.acknowledgeUpdate, (state) => {
     state.ackUpdate = state.latestUpdate;
   }),

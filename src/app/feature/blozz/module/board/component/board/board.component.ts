@@ -13,7 +13,7 @@ import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
 import { DeckFacade } from '@feature/blozz/module/deck/store/deck.facade';
 import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
 import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
-import { debounceTime, delay, filter, fromEvent, map, Observable, of, Subscription, switchMap, take, withLatestFrom } from 'rxjs';
+import { debounceTime, delay, filter, fromEvent, map, Observable, of, Subscription, switchMap, take, tap, withLatestFrom } from 'rxjs';
 
 export const BOARD_WIDTH = 9;
 export const BOARD_HEIGHT = 9;
@@ -63,45 +63,52 @@ export class BoardComponent implements AfterViewInit, OnDestroy {
     this.drop$ = fromEvent<DragEvent>(this.boardElem.nativeElement, 'drop').pipe(map((event) => ({ event })));
 
     this.subs.add(
-      this.boardFacade.rawBoard$.pipe(withLatestFrom(this.settingsFacade.tetrisMode$)).subscribe(([board, tetrisMode]) => {
-        this.boardFacade.setCorner({
-          x: this.boardElem.nativeElement.offsetLeft,
-          y: this.boardElem.nativeElement.offsetTop,
-        });
+      this.boardFacade.rawBoard$
+        .pipe(
+          withLatestFrom(this.settingsFacade.tetrisMode$),
+          tap(([board, tetrisMode]) => {
+            this.boardFacade.setCorner({
+              x: this.boardElem.nativeElement.offsetLeft,
+              y: this.boardElem.nativeElement.offsetTop,
+            });
 
-        const removals: { rows: number[]; columns: number[]; blocks: { col: number; row: number }[] } = {
-          rows: [],
-          columns: [],
-          blocks: [],
-        };
+            const removals: { rows: number[]; columns: number[]; blocks: { col: number; row: number }[] } = {
+              rows: [],
+              columns: [],
+              blocks: [],
+            };
 
-        const collectRows = (idx: number) => removals.rows.push(idx);
-        const collectColumns = (idx: number) => removals.columns.push(idx);
-        const collectBlocks = (row: number, col: number) => removals.blocks.push({ col, row });
+            const collectRows = (idx: number) => removals.rows.push(idx);
+            const collectColumns = (idx: number) => removals.columns.push(idx);
+            const collectBlocks = (row: number, col: number) => removals.blocks.push({ col, row });
 
-        checkRows(board, collectRows);
-        checkColumns(board, collectColumns);
-        checkBlocks(board, collectBlocks);
+            checkRows(board, collectRows);
+            checkColumns(board, collectColumns);
+            checkBlocks(board, collectBlocks);
 
-        removals.rows.forEach((rowIndex: number) => this.boardFacade.removeRow(rowIndex));
-        removals.columns.forEach((columnIndex: number) => this.boardFacade.removeColumn(columnIndex));
-        removals.blocks.forEach(({ col, row }) =>
-          this.boardFacade.removeBlock({ x: col, y: row }, { x: col + MINI_GRID_SIZE - 1, y: row + MINI_GRID_SIZE - 1 }),
-        );
+            removals.rows.forEach((rowIndex: number) => this.boardFacade.removeRow(rowIndex));
+            removals.columns.forEach((columnIndex: number) => this.boardFacade.removeColumn(columnIndex));
+            removals.blocks.forEach(({ col, row }) =>
+              this.boardFacade.removeBlock({ x: col, y: row }, { x: col + MINI_GRID_SIZE - 1, y: row + MINI_GRID_SIZE - 1 }),
+            );
 
-        const rowsMatch = removals.rows.length * SCORE_MULTI;
-        const colsMatch = removals.columns.length * SCORE_MULTI;
-        const boxesMatch = removals.blocks.length * SCORE_MULTI;
+            const rowsMatch = removals.rows.length * SCORE_MULTI;
+            const colsMatch = removals.columns.length * SCORE_MULTI;
+            const boxesMatch = removals.blocks.length * SCORE_MULTI;
 
-        if (rowsMatch + colsMatch + boxesMatch > 0) {
-          this.scoreFacade.addScore(BOARD_WIDTH * (rowsMatch + colsMatch + boxesMatch) ** SCORE_MULTI);
-          if (!tetrisMode) {
-            this.scoreFacade.addMultiplier(SCORE_COMBO + removals.rows.length + removals.columns.length + removals.blocks.length);
-          }
-        }
-
-        this.deckFacade.checkPieces(board, tetrisMode);
-      }),
+            if (rowsMatch + colsMatch + boxesMatch > 0) {
+              this.scoreFacade.addScore(BOARD_WIDTH * (rowsMatch + colsMatch + boxesMatch) ** SCORE_MULTI);
+              if (!tetrisMode) {
+                this.scoreFacade.addMultiplier(SCORE_COMBO + removals.rows.length + removals.columns.length + removals.blocks.length);
+              }
+            }
+          }),
+          delay(0),
+          tap(([board, tetrisMode]) => {
+            this.deckFacade.checkPieces(board, tetrisMode);
+          }),
+        )
+        .subscribe(),
     );
 
     this.subs.add(this.deckFacade.gameOver$.pipe(debounceTime(0), filter(Boolean), delay(0)).subscribe(() => this.startGame()));

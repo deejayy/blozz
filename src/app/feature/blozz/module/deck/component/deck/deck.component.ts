@@ -1,14 +1,30 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, QueryList, ViewChildren } from '@angular/core';
-import { hasOverlap, pieceValue } from '@feature/blozz/module/board/helper/board.helper';
+import { hasOverlap, pieceCanBePlaced, pieceValue } from '@feature/blozz/module/board/helper/board.helper';
 import { Piece, TOUCH_DISTANCE } from '@feature/blozz/module/board/model/board.model';
 import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
 import { generatePieces, getTargetTouch, getTouchCoords } from '@feature/blozz/module/deck/helper/deck.helper';
 import { DECK_SIZE } from '@feature/blozz/module/deck/model/piece-set';
 import { DeckFacade } from '@feature/blozz/module/deck/store/deck.facade';
 import { ScoreFacade } from '@feature/blozz/module/score/store/score.facade';
-import { GameMode } from '@feature/blozz/module/settings/model/settings.model';
+import { gameModes } from '@feature/blozz/module/settings/model/settings.model';
 import { SettingsFacade } from '@feature/blozz/module/settings/store/settings.facade';
-import { Observable, Subscription, debounceTime, delay, filter, fromEvent, map, merge, of, switchMap, take, tap } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  debounceTime,
+  delay,
+  filter,
+  fromEvent,
+  map,
+  merge,
+  of,
+  switchMap,
+  take,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
+
+const MAX_ZEN_ITERATIONS = 50;
 
 @Component({
   selector: 'app-deck',
@@ -195,10 +211,23 @@ export class DeckComponent implements AfterViewInit, OnDestroy {
   }
 
   public newDeck() {
-    this.settingsFacade.gameMode$.pipe(take(1)).subscribe((gameMode: GameMode) => {
-      this.deckFacade.setPieces(generatePieces(DECK_SIZE, gameMode));
-    });
-    this.releasePiece();
+    this.settingsFacade.gameMode$
+      .pipe(delay(0), take(1), withLatestFrom(this.boardFacade.rawBoard$, this.settingsFacade.zenMode$))
+      .subscribe(([gameMode, board, zenMode]) => {
+        let newPieces = generatePieces(DECK_SIZE, gameMode);
+        if (zenMode) {
+          for (let i = 0; i < MAX_ZEN_ITERATIONS; i++) {
+            if (newPieces.every((piece) => pieceCanBePlaced(board, piece, gameMode === gameModes.TETRIS))) {
+              break;
+            }
+
+            newPieces = generatePieces(DECK_SIZE, gameMode);
+          }
+        }
+
+        this.deckFacade.setPieces(newPieces);
+        this.releasePiece();
+      });
   }
 
   public releasePiece() {

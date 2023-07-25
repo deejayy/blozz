@@ -3,6 +3,7 @@ import { GameMode, gameModes } from '@feature/blozz/module/settings/model/settin
 export interface SettingsState {
   gameMode: GameMode;
   allowUndo: boolean;
+  zenMode: boolean;
   latestUpdate: Date;
   ackUpdate: Date | undefined;
 }
@@ -10,6 +11,7 @@ export interface SettingsState {
 export const initialSettingsState: SettingsState = {
   gameMode: gameModes.STANDARD,
   allowUndo: false,
-  latestUpdate: new Date('2023-07-03 21:25:00'),
+  zenMode: false,
+  latestUpdate: new Date('2023-07-26 00:18:00'),
   ackUpdate: undefined,
 };

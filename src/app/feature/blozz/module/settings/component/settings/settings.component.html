@@ -17,12 +17,14 @@
       </div>
     </div>
     <div class="option">
-      <mat-slide-toggle [checked]="allowUndo$ | async" (change)="toggleAllowUndo()" [disabled]="true">
-        Allow undo (coming soon)
+      <mat-slide-toggle [checked]="zenMode$ | async" (change)="toggleZenMode()" [disabled]="false">
+        Zen mode - only perfect blocks
       </mat-slide-toggle>
     </div>
     <div class="option">
-      <mat-slide-toggle [disabled]="true">Zen mode - only perfect blocks (coming soon)</mat-slide-toggle>
+      <mat-slide-toggle [checked]="allowUndo$ | async" (change)="toggleAllowUndo()" [disabled]="true">
+        Allow undo (coming soon)
+      </mat-slide-toggle>
     </div>
     <div class="option">
       <mat-slide-toggle [disabled]="true">Highlight eliminations on hover (coming soon)</mat-slide-toggle>

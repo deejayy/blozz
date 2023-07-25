@@ -13,11 +13,16 @@ export class SettingsFacade {
   public newFeatures$: Observable<boolean> = this.store.select(settingsFeature.selectNewFeatures);
   public latestUpdate$: Observable<Date> = this.store.select(settingsFeature.selectLatestUpdate);
   public gameMode$: Observable<GameMode> = this.store.select(settingsFeature.selectGameMode);
+  public zenMode$: Observable<boolean> = this.store.select(settingsFeature.selectZenMode);
 
   constructor(private store: Store<SettingsState>) {}
 
   public toggleAllowUndo() {
     this.store.dispatch(SettingsActions.toggleAllowUndo());
+  }
+
+  public toggleZenMode() {
+    this.store.dispatch(SettingsActions.toggleZenMode());
   }
 
   public acknowledgeUpdate() {

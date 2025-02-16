@@ -8,6 +8,21 @@
     <meta lang="en-US" />
     <base href="/" />
     <meta content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" name="viewport" />
+    <script src="https://captcha.cv.co.hu/captcha.js" defer></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(
+          (registration) => {
+            console.log('Service worker registration succeeded:', registration);
+          },
+          (error) => {
+            console.error(`Service worker registration failed: ${error}`);
+          },
+        );
+      } else {
+        console.error('Service workers are not supported.');
+      }
+    </script>
     <style>
       @keyframes fadeIn {
         0% {

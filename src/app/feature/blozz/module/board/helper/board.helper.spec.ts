@@ -425,6 +425,31 @@ describe('hasOverlap', () => {
 
     expect(result).toBe(true);
   });
+
+  it('overlap edge case', () => {
+    const board: Board = [
+      [0, 1, 0, 0, 0, 1, 0, 1, 1],
+      [1, 1, 1, 0, 0, 1, 1, 1, 1],
+      [1, 1, 0, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 0, 0],
+      [0, 1, 0, 1, 1, 1, 1, 0, 1],
+      [1, 1, 0, 1, 1, 0, 1, 1, 1],
+      [0, 1, 1, 1, 1, 1, 1, 1, 0],
+      [1, 0, 1, 1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 0, 1, 1, 1, 0, 1],
+    ];
+    const piece: Piece = [
+      [0, 0, 0],
+      [0, 1, 0],
+      [0, 0, 1],
+    ];
+    const rowPos = 0;
+    const colPos = 0;
+
+    const result = hasOverlap(board, piece, rowPos, colPos);
+
+    expect(result).toBe(true);
+  });
 });
 
 describe('convertPiece', () => {
@@ -470,7 +495,12 @@ describe('convertPiece', () => {
 
   it('should handle a string representation of a piece with assymetric input', () => {
     const pieceString = '.\n .\n  .\n   .';
-    const expectedPiece: Piece = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
+    const expectedPiece: Piece = [
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1],
+    ];
     const result = convertPiece(pieceString);
     expect(result).toEqual(expectedPiece);
   });

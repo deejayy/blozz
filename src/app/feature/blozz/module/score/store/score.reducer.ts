@@ -70,8 +70,8 @@ export const scoreMetaReducer = (reducer: any): any => {
           const storeScoreStruct = JSON.parse(storedScoreInfo);
           newState.score.scoreByMode = { ...newState.score.scoreByMode, ...storeScoreStruct };
         }
-      } catch {
-        console.error('Invalid score structure');
+      } catch (e) {
+        console.error('Invalid score structure', e);
       }
     }
 

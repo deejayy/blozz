@@ -221,7 +221,11 @@ export class DeckComponent implements AfterViewInit, OnDestroy {
               break;
             }
 
-            newPieces = generatePieces(DECK_SIZE, gameMode);
+            if (i < MAX_ZEN_ITERATIONS - 1) {
+              newPieces = generatePieces(DECK_SIZE, gameMode);
+            } else {
+              newPieces = [[[0, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, 0], [0, 1, 0], [0, 0, 0]]];
+            }
           }
         }
 

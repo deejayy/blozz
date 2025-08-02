@@ -7,6 +7,7 @@ import {
   convertBoard,
   convertPiece,
   hasOverlap,
+  pieceCanBePlaced,
   pieceValue,
   placePiece,
   removeBlock,
@@ -653,5 +654,120 @@ describe('checkBlocks', () => {
     const clearMethod = jest.fn();
     checkBlocks(board, clearMethod);
     expect(clearMethod).not.toHaveBeenCalled();
+  });
+});
+
+describe('pieceCanBePlaced', () => {
+  it('should return true when a piece can be placed on an empty board', () => {
+    const board: Board = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    const piece: Piece = [
+      [1, 1],
+      [1, 1],
+    ];
+
+    expect(pieceCanBePlaced(board, piece)).toBe(true);
+  });
+
+  it('should return true when a piece can be placed on a partially filled board', () => {
+    const board: Board = [
+      [1, 1, 0, 0],
+      [1, 1, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    const piece: Piece = [
+      [1, 1],
+      [1, 1],
+    ];
+
+    expect(pieceCanBePlaced(board, piece)).toBe(true);
+  });
+
+  it('should return false when a piece cannot be placed on a filled board', () => {
+    const board: Board = [
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+    ];
+    const piece: Piece = [
+      [1, 1],
+      [1, 1],
+    ];
+
+    expect(pieceCanBePlaced(board, piece)).toBe(false);
+  });
+
+  it('should return true when a piece can be placed with rotation enabled', () => {
+    const board: Board = [
+      [1, 1, 0, 0],
+      [1, 1, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    const piece: Piece = [
+      [1, 1, 0],
+      [0, 1, 1],
+      [0, 0, 0],
+    ];
+
+    expect(pieceCanBePlaced(board, piece, true)).toBe(true);
+  });
+
+  it('should return false when a piece cannot be placed even with rotation enabled', () => {
+    const board: Board = [
+      [1, 1, 1, 1],
+      [1, 0, 0, 1],
+      [1, 0, 0, 1],
+      [1, 1, 1, 1],
+    ];
+    const piece: Piece = [
+      [1, 1, 1],
+      [1, 1, 1],
+      [1, 1, 1],
+    ];
+
+    expect(pieceCanBePlaced(board, piece, true)).toBe(false);
+  });
+
+  it('should return true when a rotated piece can fit in a space where the original cannot', () => {
+    const board: Board = [
+      [0, 0, 0, 0],
+      [0, 1, 1, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 0],
+    ];
+    const piece: Piece = [
+      [0, 1, 0],
+      [0, 1, 0],
+      [1, 1, 0],
+    ];
+
+    // Without rotation, the piece won't fit around the occupied center
+    expect(pieceCanBePlaced(board, piece, false)).toBe(true);
+
+    // With rotation enabled, one of the rotations should fit
+    expect(pieceCanBePlaced(board, piece, true)).toBe(true);
+  });
+
+  it('should return true when a sparse piece with only bottom right corner filled can be placed', () => {
+    const board: Board = [
+      [0, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+    ];
+    const piece: Piece = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 1],
+    ];
+
+    expect(pieceCanBePlaced(board, piece)).toBe(true);
   });
 });

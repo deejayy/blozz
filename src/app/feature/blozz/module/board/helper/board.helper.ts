@@ -145,8 +145,7 @@ export const hoverPiece = (board: Board, piece: Piece | undefined, rowPos: numbe
     checkBlocks(flatBoard, (rowIndex: number, columnIndex: number) => {
       for (let i = 0; i < MINI_GRID_SIZE; i++) {
         for (let j = 0; j < MINI_GRID_SIZE; j++) {
-          newBoard[rowIndex + i]![columnIndex + j] =
-            newBoard[rowIndex + i]![columnIndex + j]! | HOVER_MATCH_STATE;
+          newBoard[rowIndex + i]![columnIndex + j] = newBoard[rowIndex + i]![columnIndex + j]! | HOVER_MATCH_STATE;
         }
       }
     });
@@ -275,22 +274,43 @@ export const pieceValue = (piece: Piece | undefined): number => {
   );
 };
 
+export const trimPiece = (piece: Piece): Piece => {
+  // Remove rows containing only 0s
+  const rowsToKeep = piece.filter((row) => row.some((cell) => cell !== 0));
+  if (rowsToKeep.length === 0) return [[0]];
+
+  // Remove columns containing only 0s
+  const maxCols = Math.max(...rowsToKeep.map((row) => row.length));
+  const colsToKeep: number[] = [];
+
+  for (let col = 0; col < maxCols; col++) {
+    if (rowsToKeep.some((row) => row[col] !== 0)) {
+      colsToKeep.push(col);
+    }
+  }
+
+  if (colsToKeep.length === 0) return [[0]];
+
+  return rowsToKeep.map((row) => colsToKeep.map((col) => row[col] ?? 0));
+};
+
 export const pieceCanBePlaced = (board: Board, piece: Piece, rotation: boolean = false): boolean => {
   let result: boolean = false;
+  const trimmedPiece = trimPiece(piece);
 
   board.forEach((row, i) => {
     row.forEach((_1, j) => {
-      if (!hasOverlap(board, piece, i, j)) {
+      if (!hasOverlap(board, trimmedPiece, i, j)) {
         result = true;
       }
       if (rotation) {
-        Array.from({ length: 3 }, () => piece).reduce((_2, curr) => {
+        Array.from({ length: 3 }, () => trimmedPiece).reduce((_2, curr) => {
           const newPiece = rotatePiece(curr, rotateDirection.RIGHT);
           if (!hasOverlap(board, newPiece, i, j)) {
             result = true;
           }
           return newPiece;
-        }, piece);
+        }, trimmedPiece);
       }
     });
   });

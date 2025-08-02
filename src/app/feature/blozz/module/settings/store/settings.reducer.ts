@@ -43,7 +43,7 @@ export const settingsMetaReducer = (reducer: any): any => {
       try {
         const ackDate: string | undefined = localStorage.getItem('ackDate') ?? undefined;
         const settings: { zenMode: boolean; gameMode: GameMode } = JSON.parse(
-          localStorage.getItem('settings') ?? '{ "zenMode": false, "gameMode": "classic" }',
+          localStorage.getItem('settings') ?? '{ "zenMode": false, "gameMode": "standard" }',
         );
 
         newState.settings.ackUpdate = ackDate ? new Date(ackDate) : undefined;

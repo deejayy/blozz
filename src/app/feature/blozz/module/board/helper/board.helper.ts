@@ -274,24 +274,40 @@ export const pieceValue = (piece: Piece | undefined): number => {
   );
 };
 
+// eslint-disable-next-line complexity
 export const trimPiece = (piece: Piece): Piece => {
-  // Remove rows containing only 0s
-  const rowsToKeep = piece.filter((row) => row.some((cell) => cell !== 0));
-  if (rowsToKeep.length === 0) return [[0]];
+  const startPos = -1;
+  // Find first and last non-empty rows
+  let firstRowIndex = startPos;
+  let lastRowIndex = startPos;
 
-  // Remove columns containing only 0s
-  const maxCols = Math.max(...rowsToKeep.map((row) => row.length));
-  const colsToKeep: number[] = [];
-
-  for (let col = 0; col < maxCols; col++) {
-    if (rowsToKeep.some((row) => row[col] !== 0)) {
-      colsToKeep.push(col);
+  for (let i = 0; i < piece.length; i++) {
+    if (piece[i]!.some((cell) => cell !== 0)) {
+      if (firstRowIndex === startPos) firstRowIndex = i;
+      lastRowIndex = i;
     }
   }
 
-  if (colsToKeep.length === 0) return [[0]];
+  // If no non-empty rows found, return a single cell
+  if (firstRowIndex === startPos) return [[0]];
 
-  return rowsToKeep.map((row) => colsToKeep.map((col) => row[col] ?? 0));
+  // Find first and last non-empty columns
+  let firstColIndex = startPos;
+  let lastColIndex = startPos;
+  const maxCols = Math.max(...piece.map((row) => row.length));
+
+  for (let j = 0; j < maxCols; j++) {
+    if (piece.some((row) => (row[j] ?? 0) !== 0)) {
+      if (firstColIndex === startPos) firstColIndex = j;
+      lastColIndex = j;
+    }
+  }
+
+  // If no non-empty columns found (unlikely at this point), return a single cell
+  if (firstColIndex === startPos) return [[0]];
+
+  // Extract the trimmed piece (keep all rows/columns between first and last non-empty ones)
+  return piece.slice(firstRowIndex, lastRowIndex + 1).map((row) => row.slice(firstColIndex, lastColIndex + 1));
 };
 
 export const pieceCanBePlaced = (board: Board, piece: Piece, rotation: boolean = false): boolean => {

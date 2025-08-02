@@ -770,4 +770,20 @@ describe('pieceCanBePlaced', () => {
 
     expect(pieceCanBePlaced(board, piece)).toBe(true);
   });
+
+  it('make sure trimming is okay', () => {
+    const board: Board = [
+      [0, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 0, 1],
+      [1, 1, 1, 1],
+    ];
+    const piece: Piece = [
+      [1, 0, 0],
+      [0, 0, 0],
+      [0, 0, 1],
+    ];
+
+    expect(pieceCanBePlaced(board, piece)).toBe(true);
+  });
 });

@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, QueryList, ViewChildren } from '@angular/core';
-import { hasOverlap, pieceCanBePlaced, pieceValue } from '@feature/blozz/module/board/helper/board.helper';
+import { allPieceCanBePlaced, hasOverlap, pieceCanBePlaced, pieceValue } from '@feature/blozz/module/board/helper/board.helper';
 import { Piece, TOUCH_DISTANCE } from '@feature/blozz/module/board/model/board.model';
 import { BoardFacade } from '@feature/blozz/module/board/store/board.facade';
 import { generatePieces, getTargetTouch, getTouchCoords } from '@feature/blozz/module/deck/helper/deck.helper';
@@ -217,14 +217,33 @@ export class DeckComponent implements AfterViewInit, OnDestroy {
         let newPieces = generatePieces(DECK_SIZE, gameMode);
         if (zenMode) {
           for (let i = 0; i < MAX_ZEN_ITERATIONS; i++) {
-            if (newPieces.every((piece) => pieceCanBePlaced(board, piece, gameMode === gameModes.TETRIS))) {
+            if (
+              newPieces.every((piece) => pieceCanBePlaced(board, piece, gameMode === gameModes.TETRIS)) &&
+              allPieceCanBePlaced(board, newPieces, gameMode === gameModes.TETRIS)
+            ) {
               break;
             }
 
             if (i < MAX_ZEN_ITERATIONS - 1) {
               newPieces = generatePieces(DECK_SIZE, gameMode);
             } else {
-              newPieces = [[[0, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, 0], [0, 1, 0], [0, 0, 0]]];
+              newPieces = [
+                [
+                  [0, 0, 0],
+                  [0, 1, 0],
+                  [0, 0, 0],
+                ],
+                [
+                  [0, 0, 0],
+                  [0, 1, 0],
+                  [0, 0, 0],
+                ],
+                [
+                  [0, 0, 0],
+                  [0, 1, 0],
+                  [0, 0, 0],
+                ],
+              ];
             }
           }
         }

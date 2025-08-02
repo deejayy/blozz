@@ -310,20 +310,20 @@ export const trimPiece = (piece: Piece): Piece => {
   return piece.slice(firstRowIndex, lastRowIndex + 1).map((row) => row.slice(firstColIndex, lastColIndex + 1));
 };
 
-export const pieceCanBePlaced = (board: Board, piece: Piece, rotation: boolean = false): boolean => {
-  let result: boolean = false;
+export const pieceCanBePlaced = (board: Board, piece: Piece, rotation: boolean = false): { x: number; y: number } | undefined => {
+  let result: { x: number; y: number } | undefined;
   const trimmedPiece = trimPiece(piece);
 
   board.forEach((row, i) => {
     row.forEach((_1, j) => {
       if (!hasOverlap(board, trimmedPiece, i, j)) {
-        result = true;
+        result = { x: j, y: i };
       }
       if (rotation) {
         Array.from({ length: 3 }, () => trimmedPiece).reduce((_2, curr) => {
           const newPiece = rotatePiece(curr, rotateDirection.RIGHT);
           if (!hasOverlap(board, newPiece, i, j)) {
-            result = true;
+            result = { x: j, y: i };
           }
           return newPiece;
         }, trimmedPiece);
@@ -332,6 +332,26 @@ export const pieceCanBePlaced = (board: Board, piece: Piece, rotation: boolean =
   });
 
   return result;
+};
+
+/**
+ * This method checks if all pieces can be placed on the board together.
+ *
+ * @param board Board
+ * @param pieces Array of pieces
+ * @param rotation If true, check if pieces can be placed with rotation
+ */
+export const allPieceCanBePlaced = (board: Board, pieces: Piece[], rotation: boolean = false): boolean => {
+  let testBoard = JSON.parse(JSON.stringify(board)) as Board;
+
+  return pieces.every((piece) => {
+    const canBePlaced = pieceCanBePlaced(testBoard, piece, rotation);
+    if (canBePlaced) {
+      testBoard = placePiece(testBoard, piece, canBePlaced.y, canBePlaced.x);
+      return true;
+    }
+    return false;
+  });
 };
 
 export const getDragCoordsInPixel = (event: DragEvent) => {
